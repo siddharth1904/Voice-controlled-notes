@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shoelace-css/1.0.0-beta16/shoelace.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+
+        <h1 class="text-center" style="padding:10px;">Voice Controlled Notes App</h1>
+
+        <h3 *ngIf="noBrowserSupport">Sorry, Your Browser Doesn't Support the Web Speech API. Try Opening This Demo In
+            Google Chrome.</h3>
+        <div *ngIf="app">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h3 class="text-center">Add New Note</h3>
+                            <div class="input-single">
+                                <textarea id="note-textarea"
+                                    placeholder="Create a new note by typing or using voice recognition." rows="6"
+                                    (change)="syncNoteContent($event.target.value)" [value]="noteTextarea"></textarea>
+                            </div>
+                            <button type="button" title="Start Recording" (click)="startRecording($event)"
+                                class="btn btn-info">Start
+                                Recognition</button>
+                            <button type="button" title="Pause Recording" (click)="pauseRecording($event)"
+                                class="btn btn-warning">Pause
+                                Recognition</button>
+                            <button type="button" title="Save Note" (click)="saveNote($event)"
+                                class="btn btn-success">Save Note</button>
+                            <p class="text text-dark">{{instructions}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h3 class="text-center">My Notes</h3>
+                            <div *ngIf="userNotes[0];else noNotes">
+                            <ul *ngFor="let note of userNotes" class="list-group ">
+                                <li class="note" class="list-group-item list-group-item-light">
+                                    <p #noteDate><strong>{{note.date}}</strong></p>
+                                    <a href="" class="btn btn-dark btn-sm" title="Listen to Note"
+                                        (click)="readOutLoud($event,note.content)">Listen to Note</a>
+                                    <a href="" class="btn btn-danger btn-sm" title="Delete"
+                                        (click)="deleteNote(note.date,$event)">Delete</a>
+                                    <p style="padding:1em;">{{note.content}}</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <ng-template #noNotes>
+                            <p class="text-center text-info">No saved notes. Record & Save a new note.</p>
+                        </ng-template>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- <script src="../../../node_modules/@types/jquery/JQuery.d.ts"></script> -->
+
+
+
+</body>
